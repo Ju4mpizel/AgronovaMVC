@@ -1,0 +1,57 @@
+<?php
+session_start();
+$_SESSION['usuario_id'] = 1; 
+$_SESSION['usuario_nombre'] = 'Roberto Arce (Prueba)'; 
+
+// Prueba cambiando este texto por: 'gerente', 'ventas', 'almacen' o 'chofer'
+$_SESSION['usuario_rol'] = 'gerente'; 
+
+// Asignamos las variables de prueba para el HTML
+$nombreEmpleado = $_SESSION['usuario_nombre'];
+$rolEmpleado = $_SESSION['usuario_rol'];
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AgroNova - Dashboard</title>
+</head>
+<body>
+    <header>
+        <h1>AgroNova Distribuciones S.R.L.</h1>
+        <p>Empleado: <?php echo $nombreEmpleado; ?> | Rol: <?php echo $rolEmpleado; ?></p>
+        <a href="../controllers/AuthController.php?action=logout">Cerrar Sesión</a>
+    </header>
+    <hr>
+    <nav>
+        <h2>Menú</h2>
+        <ul>
+            <li><a href="dashboard.php">Inicio</a></li>
+            <?php
+            //GERENTE ADMINISTRADOR
+            if ($rolEmpleado == 'gerente') {
+                echo '<li><a href="modules/reportes.php">Reportes de Pedidos</a></li>';
+            }
+            //ATENCIÓN Y VENTA (Ventas o Gerente)
+            if ($rolEmpleado == 'ventas' || $rolEmpleado == 'gerente') {
+                echo '<li><a href="modules/clientes.php">Registrar Nuevo Cliente</a></li>';
+                echo '<li><a href="modules/pedidos.php">Registrar Pedido</a></li>';
+            }
+            //ENCARGADO DE ALMACÉN (Almacen o Gerente)
+            if ($rolEmpleado == 'almacen' || $rolEmpleado == 'gerente') {
+                echo '<li><a href="modules/inventario.php">CRUD Gestión de Inventario</a></li>';
+            }
+            //CHOFER REPARTIDOR (Chofer o Gerente)
+            if ($rolEmpleado == 'chofer' || $rolEmpleado == 'gerente') {
+                echo '<li><a href="modules/rutas.php">Hojas de Ruta / Entregas</a></li>';
+            }
+            ?>
+        </ul>
+    </nav>
+    <hr>
+    <main>
+        <h2>Panel de Control Principal</h2>
+        <p>Bienvenido al sistema. Has ingresado correctamente.</p>
+    </main>
+</body>
+</html>
