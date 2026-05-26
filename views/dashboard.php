@@ -1,12 +1,10 @@
 <?php
 session_start();
-$_SESSION['usuario_id'] = 1; 
-$_SESSION['usuario_nombre'] = 'Roberto Arce (Prueba)'; 
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
-// Prueba cambiando este texto por: 'gerente', 'ventas', 'almacen' o 'chofer'
-$_SESSION['usuario_rol'] = 'gerente'; 
-
-// Asignamos las variables de prueba para el HTML
 $nombreEmpleado = $_SESSION['usuario_nombre'];
 $rolEmpleado = $_SESSION['usuario_rol'];
 ?>
