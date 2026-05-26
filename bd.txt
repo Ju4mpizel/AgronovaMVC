@@ -1,0 +1,84 @@
+CREATE DATABASE agronova_db;
+USE agronova_db;
+
+CREATE TABLE usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_completo VARCHAR(60) NOT NULL,
+    username VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(20) NOT NULL,
+    rol VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE clientes (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_completo VARCHAR(60) NOT NULL,
+    ci_nit VARCHAR(15) NOT NULL,
+    telefono VARCHAR(12),
+    direccion VARCHAR(100) NOT NULL,
+    zona VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE productos (
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_insumo VARCHAR(50) NOT NULL,
+    categoria VARCHAR(20) NOT NULL,
+    stock_disponible INT NOT NULL,
+    precio_unitario DECIMAL(8,2) NOT NULL,
+    fecha_vencimiento VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE pedidos (
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    total_pagar DECIMAL(8,2) NOT NULL,
+    estado_entrega VARCHAR(15) NOT NULL,
+    fecha_registro VARCHAR(20) NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- ========================================================
+-- TRABAJADORES DE AGRONOVA (18 EMPLEADOS REALES)
+-- ========================================================
+
+INSERT INTO usuarios (nombre_completo, username, password, rol) VALUES
+('Roberto Arce Cuevas', 'roberto.gerente', 'agro123', 'gerente'),
+('Mariana Ugarte Soliz', 'mariana.admin', 'finanzas123', 'gerente'),
+('Sergio Vargas Rojas', 'sergio.admin', 'finanzas456', 'gerente'),
+('Alejandro Flores M.', 'alejandro.ventas', 'comercial1', 'ventas'),
+('Claudia Rios Torrico', 'claudia.ventas', 'comercial2', 'ventas'),
+('Fernando Torrico G.', 'fernando.ventas', 'comercial3', 'ventas'),
+('Gabriela Benitez P.', 'gabriela.ventas', 'comercial4', 'ventas'),
+('Mauricio Lopez S.', 'mauricio.ventas', 'comercial5', 'ventas'),
+('Natalia Rocha V.', 'natalia.atencion', 'atencion1', 'ventas'),
+('Paola Mendez Castro', 'paola.atencion', 'atencion2', 'ventas'),
+('Hugo Mendoza Claros', 'hugo.almacen', 'almacen1', 'almacen'),
+('Ramiro Jimenez O.', 'ramiro.aux1', 'almacen2', 'almacen'),
+('Luis Alberto Siles', 'luis.aux2', 'almacen3', 'almacen'),
+('Walter Fernandez K.', 'walter.aux3', 'almacen4', 'almacen'),
+('Carlos Mamani Quispe', 'carlos.chofer', 'ruta123', 'chofer'),
+('Jorge Estrada Luna', 'jorge.chofer', 'ruta456', 'chofer'),
+('Ricardo Roca Suárez', 'ricardo.tecnico', 'tecagro1', 'ventas'),
+('David Choque Villca', 'david.tecnico', 'tecagro2', 'ventas');
+
+-- ========================================================
+-- DATOS BASE PARA EMPEZAR LAS PRUEBAS DEL SISTEMA
+-- ========================================================
+
+INSERT INTO clientes (nombre_completo, ci_nit, telefono, direccion, zona) VALUES
+('Asociación de Productores Punata', '10203040', '71234567', 'Av. Libertadores KM 2', 'Cochabamba'),
+('Cooperativa Agrícola Montero', '55443322', '60112233', 'Barrio Lindo, Calle 4', 'Santa Cruz'),
+('Sindicato Agrario Yamparáez', '99887766', '73456789', 'Comunidad Centro', 'Chuquisaca');
+
+INSERT INTO productos (nombre_insumo, categoria, stock_disponible, precio_unitario, fecha_vencimiento) VALUES
+('Fertilizante Líquido NPK', 'Fertilizantes', 120, 150.00, '2027-06-15'),
+('Pesticida Control de Plagas X', 'Pesticidas', 4, 280.00, '2026-08-20'),
+('Semilla de Maíz (Saco 20kg)', 'Semillas', 85, 420.00, '2027-01-10'),
+('Aspersor de Alta Presión', 'Riego', 50, 85.50, '2035-12-31');
+
+INSERT INTO pedidos (id_cliente, id_producto, cantidad, total_pagar, estado_entrega, fecha_registro) VALUES
+(1, 3, 2, 840.00, 'Entregado', '2026-05-20'),
+(2, 1, 10, 1500.00, 'En Ruta', '2026-05-24'),
+(3, 2, 1, 280.00, 'Pendiente', '2026-05-25');
