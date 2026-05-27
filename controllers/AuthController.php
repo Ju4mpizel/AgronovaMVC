@@ -11,6 +11,7 @@ class AuthController {
         $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $_POST = array_map('htmlspecialchars', $_POST);
             $username = trim($_POST['username'] ?? '');
             $password = trim($_POST['password'] ?? '');
 

@@ -14,6 +14,7 @@ class CompraController {
 
     public function procesar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $_POST = array_map('htmlspecialchars', $_POST);
             $id_producto = intval($_POST['id_producto'] ?? 0);
             $cantidad = intval($_POST['cantidad'] ?? 0);
             $fecha_compra = trim($_POST['fecha_compra'] ?? '');
