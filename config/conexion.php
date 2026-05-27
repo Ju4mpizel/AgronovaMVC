@@ -3,7 +3,7 @@
 function conectarDB() {
     $servidor = "localhost";
     $usuario = "root";
-    $password = "root"; 
+    $password = "12345"; 
     $bd = "AgronovaMVC";
 
     $conn = mysqli_connect($servidor, $usuario, $password, $bd);
