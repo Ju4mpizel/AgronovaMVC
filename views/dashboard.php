@@ -36,6 +36,7 @@ $rolEmpleado = $_SESSION['usuario_rol'];
             if ($rolEmpleado == 'ventas' || $rolEmpleado == 'gerente') {
                 echo '<li><a href="modules/clientes.php">Registrar Nuevo Cliente</a></li>';
                 echo '<li><a href="modules/pedidos.php">Registrar Pedido</a></li>';
+                echo '<li><a href="modules/lista_pedidos.php">Ver Historial de Pedidos</a></li>';
             }
             
             // ENCARGADO DE ALMACÉN (Almacen o Gerente - Ahora incluye la pestaña de compras)
