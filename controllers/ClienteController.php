@@ -14,6 +14,7 @@ class ClienteController {
     }
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $_POST = array_map('htmlspecialchars', $_POST);
             $nombre = trim($_POST['nombre_completo'] ?? '');
             $ci_nit = trim($_POST['ci_nit'] ?? '');
             $telefono = trim($_POST['telefono'] ?? '');
@@ -41,6 +42,7 @@ class ClienteController {
     }
     public function editar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $_POST = array_map('htmlspecialchars', $_POST);
             $id = intval($_POST['id_cliente'] ?? 0);
             $nombre = trim($_POST['nombre_completo'] ?? '');
             $ci_nit = trim($_POST['ci_nit'] ?? '');

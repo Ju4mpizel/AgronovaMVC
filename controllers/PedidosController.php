@@ -15,6 +15,7 @@ class PedidosController {
 
     public function procesarVenta() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $_POST = array_map('htmlspecialchars', $_POST);
             $id_cliente = intval($_POST['id_cliente'] ?? 0);
             $id_producto = intval($_POST['id_producto'] ?? 0);
             $cantidad = intval($_POST['cantidad'] ?? 0);
