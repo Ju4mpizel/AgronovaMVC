@@ -26,20 +26,25 @@ $rolEmpleado = $_SESSION['usuario_rol'];
         <ul>
             <li><a href="dashboard.php">Inicio</a></li>
             <?php
-            //GERENTE ADMINISTRADOR
+            // GERENTE ADMINISTRADOR (Pestañas de reportes de ventas y compras)
             if ($rolEmpleado == 'gerente') {
-                echo '<li><a href="modules/reportes.php">Reportes de Pedidos</a></li>';
+                echo '<li><a href="modules/reportes_pedidos.php">Reportes de Pedidos</a></li>';
+                echo '<li><a href="modules/reportes_compras.php">Reportes de Compras</a></li>';
             }
-            //ATENCIÓN Y VENTA (Ventas o Gerente)
+            
+            // ATENCIÓN Y VENTA (Ventas o Gerente)
             if ($rolEmpleado == 'ventas' || $rolEmpleado == 'gerente') {
                 echo '<li><a href="modules/clientes.php">Registrar Nuevo Cliente</a></li>';
                 echo '<li><a href="modules/pedidos.php">Registrar Pedido</a></li>';
             }
-            //ENCARGADO DE ALMACÉN (Almacen o Gerente)
+            
+            // ENCARGADO DE ALMACÉN (Almacen o Gerente - Ahora incluye la pestaña de compras)
             if ($rolEmpleado == 'almacen' || $rolEmpleado == 'gerente') {
                 echo '<li><a href="modules/inventario.php">CRUD Gestión de Inventario</a></li>';
+                echo '<li><a href="modules/compras.php">Registrar Compra de Insumos</a></li>';
             }
-            //CHOFER REPARTIDOR (Chofer o Gerente)
+            
+            // CHOFER REPARTIDOR (Chofer o Gerente)
             if ($rolEmpleado == 'chofer' || $rolEmpleado == 'gerente') {
                 echo '<li><a href="modules/rutas.php">Hojas de Ruta / Entregas</a></li>';
             }
