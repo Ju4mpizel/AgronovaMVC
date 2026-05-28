@@ -17,40 +17,52 @@ class PedidosController {
         return $this->modelo->obtenerReportePedidos();
     }
 
-    public function procesarVenta() {
+    public function processarVenta() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST = array_map('htmlspecialchars', $_POST);
             $id_cliente = intval($_POST['id_cliente'] ?? 0);
             $id_producto = intval($_POST['id_producto'] ?? 0);
             $cantidad = intval($_POST['cantidad'] ?? 0);
             $fecha_registro = trim($_POST['fecha_registro'] ?? '');
+            
+            $accion_factura = isset($_POST['imprimir_factura']) ? true : false;
 
             if ($id_cliente > 0 && $id_producto > 0 && $cantidad > 0) {
                 
                 $productoData = $this->modelo->obtenerDatosProducto($id_producto);
                 
                 if (!$productoData) {
-                    die("Error: El producto seleccionado no existe en el catálogo.");
+                    header("Location: ../views/modules/pedidos.php?error=no_existe");
+                    exit();
                 }
 
                 $stock_actual = intval($productoData['stock_disponible']);
                 $precio_venta = floatval($productoData['precio_venta']);
 
                 if ($cantidad > $stock_actual) {
-                    die("Error: Stock insuficiente. El stock disponible actual es de " . $stock_actual . " unidades.");
+                    header("Location: ../views/modules/pedidos.php?error=stock_insuficiente&disponible=" . $stock_actual);
+                    exit();
                 }
                 $total_pagar = $precio_venta * $cantidad;
 
-                $exito = $this->modelo->registrarVenta($id_cliente, $id_producto, $cantidad, $total_pagar, $fecha_registro);
+                // CORRECCIÓN CLAVE: $resultado_pedido ahora contendrá el ID numérico real devuelto por el modelo
+                $resultado_pedido = $this->modelo->registrarVenta($id_cliente, $id_producto, $cantidad, $total_pagar, $fecha_registro);
                 
-                if ($exito) {
-                    header("Location: ../views/modules/lista_pedidos.php");
+                if ($resultado_pedido !== false) {
+                    if ($accion_factura) {
+                        // Enviamos el ID real de forma directa y limpia
+                        header("Location: ../views/modules/pedidos.php?imprimir_id=" . $resultado_pedido);
+                    } else {
+                        header("Location: ../views/modules/lista_pedidos.php");
+                    }
                     exit();
                 } else {
-                    echo "Error al procesar la transacción de venta.";
+                    header("Location: ../views/modules/pedidos.php?error=db_error");
+                    exit();
                 }
             } else {
-                echo "Por favor, introduzca datos válidos en el formulario de ventas.";
+                header("Location: ../views/modules/pedidos.php?error=datos_invalidos");
+                exit();
             }
         }
     }
@@ -58,5 +70,5 @@ class PedidosController {
 
 if (isset($_GET['action']) && $_GET['action'] === 'vender') {
     $controller = new PedidosController();
-    $controller->procesarVenta();
+    $controller->processarVenta();
 }

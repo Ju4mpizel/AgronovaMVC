@@ -2,9 +2,11 @@
 // views/layout/footer.php
 ?>
 </main>
-<hr>
-<footer>
-    <p>&copy; <?php echo date('Y'); ?> AgroNova System - Todos los derechos reservados.</p>
-</footer>
+</div>
+
+<!-- Script crucial para inicializar todos los iconos cargados -->
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>

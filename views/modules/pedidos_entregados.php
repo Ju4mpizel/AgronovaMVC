@@ -24,7 +24,7 @@ $resultado = mysqli_query($db, $sql);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>AgroNova - Pedidos Entregados</title>
+    <title>AgroNova - Entregas Concluidas</title>
 </head>
 <body>
 
@@ -34,46 +34,57 @@ $resultado = mysqli_query($db, $sql);
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
 
-    <h2>Historial de Pedidos Entregados (Concluidos)</h2>
+    <!-- Encabezado del Módulo -->
+    <div class="flex flex-col gap-1 pb-2 border-b border-slate-100">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-800">Historial de Entregas Concluidas</h2>
+        <p class="text-sm text-slate-400 font-medium">Registro histórico de pedidos entregados con éxito al sector agrícola.</p>
+    </div>
 
-    <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
-            <tr>
-                <th>ID Pedido</th>
-                <th>Cliente Destinatario</th>
-                <th>Zona / Ciudad</th>
-                <th>Dirección de Entrega</th>
-                <th>Insumo Agrícola</th>
-                <th>Cantidad</th>
-                <th>Total Pagado (Bs.)</th>
-                <th>Fecha Registro</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-            if (mysqli_num_rows($resultado) > 0) {
-                while ($row = mysqli_fetch_array($resultado)) { 
-                ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['id_pedido'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($row['cliente'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($row['zona'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($row['direccion'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($row['producto'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($row['cantidad'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars(number_format($row['total_pagar'], 2), ENT_QUOTES, 'UTF-8'); ?> Bs.</td>
-                        <td><?php echo htmlspecialchars($row['fecha_registro'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><span style="background-color: #d4edda; color: #155724; padding: 2px 5px; font-weight: bold;">✓ Entregado</span></td>
-                    </tr>
+    <!-- Tabla de Concluidos -->
+    <div class="w-full overflow-x-auto border border-slate-100 rounded-2xl shadow-sm bg-white mt-4">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    <th class="py-4 px-6">ID Pedido</th>
+                    <th class="py-4 px-6">Cliente Agricultor</th>
+                    <th class="py-4 px-6">Zona / Dirección</th>
+                    <th class="py-4 px-6">Insumo / Cantidad</th>
+                    <th class="py-4 px-6">Monto Cobrado</th>
+                    <th class="py-4 px-6 text-center">Estado</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-sm text-slate-600 font-medium">
                 <?php 
-                } 
-            } else {
-                echo "<tr><td colspan='9'>Aún no se han registrado entregas concluidas.</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
+                if (mysqli_num_rows($resultado) > 0) {
+                    while ($row = mysqli_fetch_array($resultado)) { 
+                ?>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-4 px-6 text-slate-400 font-mono text-xs">#OD-<?php echo htmlspecialchars($row['id_pedido'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td class="py-4 px-6 text-slate-800 font-semibold"><?php echo htmlspecialchars($row['cliente'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td class="py-4 px-6 text-xs text-slate-500">
+                                <span class="font-bold text-slate-700 block"><?php echo htmlspecialchars($row['zona'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <?php echo htmlspecialchars($row['direccion'], ENT_QUOTES, 'UTF-8'); ?>
+                            </td>
+                            <td class="py-4 px-6 text-slate-700 text-xs">
+                                <span class="font-medium block text-sm"><?php echo htmlspecialchars($row['producto'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <?php echo htmlspecialchars($row['cantidad'], ENT_QUOTES, 'UTF-8'); ?> uds.
+                            </td>
+                            <td class="py-4 px-6 text-slate-900 font-bold font-mono">Bs. <?php echo htmlspecialchars(number_format($row['total_pagar'], 2), ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-xs font-bold">
+                                    <i data-lucide="check-circle" class="w-3 h-3"></i> Concluido
+                                </span>
+                            </td>
+                        </tr>
+                <?php 
+                    } 
+                } else {
+                    echo "<tr><td colspan='6' class='py-8 px-6 text-center text-sm text-slate-400 italic'>Aún no se han completado despachos logísticos en este periodo.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
 
     <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>

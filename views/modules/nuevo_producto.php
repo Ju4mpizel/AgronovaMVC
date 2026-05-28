@@ -21,30 +21,68 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'almacen' &
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
 
-    <h2>Registrar Nuevo Insumo Agrícola</h2>
-    <p><a href="inventario.php">◄ Volver al Inventario</a></p>
+    <!-- Encabezado con Botón de Retorno -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-slate-100">
+        <div class="flex flex-col gap-1">
+            <h2 class="text-2xl font-bold tracking-tight text-slate-800">Registrar Nuevo Insumo</h2>
+            <p class="text-sm text-slate-400 font-medium">Introduce un nuevo insumo químico o biológico al catálogo general de la distribuidora.</p>
+        </div>
+        <a href="inventario.php" class="inline-flex items-center justify-center gap-2 px-3.5 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold rounded-xl shadow-sm transition-all shrink-0">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al inventario
+        </a>
+    </div>
 
-    <form action="../../controllers/InventarioController.php?action=registrar" method="POST">
-        <label>Nombre del Insumo / Producto:</label><br>
-        <input type="text" name="nombre_insumo" placeholder="Ej. Urea Fertilizante" required><br><br>
+    <!-- Contenedor del Formulario -->
+    <div class="max-w-2xl bg-white border border-slate-100 rounded-2xl shadow-sm p-8 mt-4">
+        <form action="../../controllers/InventarioController.php?action=registrar" method="POST" class="space-y-5">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Nombre del Insumo / Producto <span class="text-red-500">*</span></label>
+                    <input type="text" name="nombre_insumo" placeholder="Ej. Urea Granulada 46%" required 
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:border-agro-600 focus:ring-1 focus:ring-agro-600 transition-all">
+                </div>
 
-        <label>Categoría:</label><br>
-        <input type="text" name="categoria" placeholder="Ej. Fertilizantes" required><br><br>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Categoría del Producto <span class="text-red-500">*</span></label>
+                    <input type="text" name="categoria" placeholder="Ej. Fertilizantes" required 
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:border-agro-600 focus:ring-1 focus:ring-agro-600 transition-all">
+                </div>
+            </div>
 
-        <label>Precio de Compra (Bs.):</label><br>
-        <input type="number" step="0.01" name="precio_compra" placeholder="Ej. 120.50" required><br><br>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Precio Compra (Bs.) <span class="text-red-500">*</span></label>
+                    <input type="number" step="0.01" name="precio_compra" placeholder="Ej. 110.00" required 
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 focus:outline-none focus:border-agro-600 focus:ring-1 focus:ring-agro-600 transition-all">
+                </div>
 
-        <label>Precio de Venta (Bs.):</label><br>
-        <input type="number" step="0.01" name="precio_venta" placeholder="Ej. 150.00" required><br><br>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Precio Venta (Bs.) <span class="text-red-500">*</span></label>
+                    <input type="number" step="0.01" name="precio_venta" placeholder="Ej. 145.50" required 
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 focus:outline-none focus:border-agro-600 focus:ring-1 focus:ring-agro-600 transition-all">
+                </div>
 
-        <label>Stock Inicial Disponible:</label><br>
-        <input type="number" name="stock_disponible" placeholder="Ej. 10" required><br><br>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Stock Inicial <span class="text-red-500">*</span></label>
+                    <input type="number" name="stock_disponible" placeholder="Ej. 20" required 
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 focus:outline-none focus:border-agro-600 focus:ring-1 focus:ring-agro-600 transition-all">
+                </div>
+            </div>
 
-        <label>Fecha de Vencimiento:</label><br>
-        <input type="text" name="fecha_vencimiento" placeholder="AAAA-MM-DD" value="2027-12-31" required><br><br>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Fecha de Vencimiento <span class="text-red-500">*</span></label>
+                <input type="text" name="fecha_vencimiento" placeholder="AAAA-MM-DD" value="2027-12-31" required 
+                       class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono text-slate-700 focus:outline-none focus:border-agro-600 focus:ring-1 focus:ring-agro-600 transition-all">
+            </div>
 
-        <button type="submit">Guardar Producto en Catálogo</button>
-    </form>
+            <div class="pt-2 border-t border-slate-100 flex justify-end">
+                <button type="submit" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-agro-600 hover:bg-agro-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all">
+                    <i data-lucide="save" class="w-4 h-4"></i> Catalogar Producto
+                </button>
+            </div>
+        </form>
+    </div>
 
     <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>

@@ -25,9 +25,17 @@ class Pedido {
                       VALUES ($id_cliente, $id_producto, $cantidad, $total_pagar, 'Pendiente', '$fechaEsc')";
         
         $insertExito = mysqli_query($this->db, $sqlPedido);
+        
         if ($insertExito) {
+            // CAPTURA CORRECTA: Recuperamos el ID usando la misma conexión activa ($this->db)
+            $id_nuevo_pedido = mysqli_insert_id($this->db);
+            
+            // Actualizamos el stock en el almacén
             $sqlStock = "UPDATE productos SET stock_disponible = stock_disponible - $cantidad WHERE id_producto = $id_producto";
-            return mysqli_query($this->db, $sqlStock);
+            mysqli_query($this->db, $sqlStock);
+            
+            // RETORNAMOS EL ID generado para que el controlador lo use directamente
+            return $id_nuevo_pedido;
         }
 
         return false;

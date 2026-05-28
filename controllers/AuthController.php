@@ -24,13 +24,17 @@ class AuthController {
                     $_SESSION['usuario_nombre'] = $usuario['nombre_completo'];
                     $_SESSION['usuario_rol']    = $usuario['rol'];
 
-                    header('Location: dashboard.php');
+                    // CORRECCIÓN 1: Ruta absoluta para saltar correctamente de la carpeta controllers/ a views/
+                    header('Location: /AgronovaMVC/views/dashboard.php');
                     exit();
                 } else {
-                    $error = "Usuario o contraseña incorrectos.";
+                    // CORRECCIÓN 2: Si falla, regresa enviando el error por la URL para el aviso dinámico
+                    header('Location: /AgronovaMVC/views/login.php?error=1');
+                    exit();
                 }
             } else {
-                $error = "Por favor, complete todos los campos.";
+                header('Location: /AgronovaMVC/views/login.php?error=1');
+                exit();
             }
         }
         return $error;
@@ -42,11 +46,22 @@ class AuthController {
         }
         $_SESSION = array();
         session_destroy();
-        header('Location: ../views/login.php');
+        
+        // CORRECCIÓN 3: Ruta absoluta limpia para el cierre de sesión seguro
+        header('Location: /AgronovaMVC/views/login.php');
         exit();
     }
 }
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+
+// CORRECCIÓN 4: DISPARADORES UNIFICADOS
+// Ahora el archivo escucha de forma obligatoria tanto el inicio como el cierre de sesión
+if (isset($_GET['action'])) {
     $auth = new AuthController();
-    $auth->logout();
+    
+    if ($_GET['action'] === 'login') {
+        $auth->login();
+    }
+    if ($_GET['action'] === 'logout') {
+        $auth->logout();
+    }
 }
