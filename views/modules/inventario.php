@@ -21,12 +21,16 @@ $resultado = $modeloProducto->listarTodos(); // Ejecuta el SELECT * FROM product
 </head>
 <body>
 
-    <p>
-        <a href="../dashboard.php">◄ Volver al Dashboard</a> | 
-        <a href="nuevo_producto.php">Agregar nuevo producto</a>
-    </p>
+    <?php 
+    require_once __DIR__ . '/../layout/header.php'; 
+    require_once __DIR__ . '/../layout/nav.php'; 
+    ?>
 
     <h2>Gestión de Inventario (CRUD Almacén)</h2>
+
+    <p>
+        <a href="nuevo_producto.php">Agregar nuevo producto</a>
+    </p>
 
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
@@ -38,8 +42,7 @@ $resultado = $modeloProducto->listarTodos(); // Ejecuta el SELECT * FROM product
                 <th>Precio Venta</th>
                 <th>Stock Disponible</th>
                 <th>Fecha Vencimiento</th>
-                <th>Acciones</th>
-            </tr>
+                <th>Acción</th> </tr>
         </thead>
         <tbody>
             <?php 
@@ -47,29 +50,24 @@ $resultado = $modeloProducto->listarTodos(); // Ejecuta el SELECT * FROM product
             while ($row = mysqli_fetch_array($resultado)) { 
             ?>
                 <tr>
-                    <td><?php echo $row['id_producto']; ?></td>
-                    <td><?php echo $row['nombre_insumo']; ?></td>
-                    <td><?php echo $row['categoria']; ?></td>
-                    <td><?php echo $row['precio_compra']; ?> Bs.</td>
-                    <td><?php echo $row['precio_venta']; ?> Bs.</td>
+                    <td><?php echo htmlspecialchars($row['id_producto'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($row['nombre_insumo'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($row['categoria'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($row['precio_compra'], ENT_QUOTES, 'UTF-8'); ?> Bs.</td>
+                    <td><?php echo htmlspecialchars($row['precio_venta'], ENT_QUOTES, 'UTF-8'); ?> Bs.</td>
                     <td>
                         <?php 
                         // Alerta visual simple si el stock es menor o igual a 5 unidades
                         if ($row['stock_disponible'] <= 5) {
-                            echo "<strong>" . $row['stock_disponible'] . " (STOCK CRÍTICO)</strong>";
+                            echo "<strong>" . htmlspecialchars($row['stock_disponible'], ENT_QUOTES, 'UTF-8') . " (STOCK CRÍTICO)</strong>";
                         } else {
-                            echo $row['stock_disponible'];
+                            echo htmlspecialchars($row['stock_disponible'], ENT_QUOTES, 'UTF-8');
                         }
                         ?>
                     </td>
-                    <td><?php echo $row['fecha_vencimiento']; ?></td>
+                    <td><?php echo htmlspecialchars($row['fecha_vencimiento'], ENT_QUOTES, 'UTF-8'); ?></td>
                     <td>
-                        <a href="editar_producto.php?id=<?php echo $row['id_producto']; ?>">Editar</a> | 
-    
-                        <a href="../../controllers/InventarioController.php?action=eliminar&id=<?php echo $row['id_producto']; ?>" 
-                            onclick="return confirm('¿Seguro que quieres eliminar este insumo?');">
-                            Eliminar
-                        </a>
+                        <a href="editar_producto.php?id=<?php echo urlencode($row['id_producto']); ?>">Editar</a>
                     </td>
                 </tr>
             <?php 
@@ -78,5 +76,6 @@ $resultado = $modeloProducto->listarTodos(); // Ejecuta el SELECT * FROM product
         </tbody>
     </table>
 
+    <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

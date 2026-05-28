@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'ventas' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -12,11 +14,17 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'ventas' &&
     <title>AgroNova - Registrar Cliente</title>
 </head>
 <body>
-    <a href="clientes.php">◄ Volver a Clientes</a>
+
+    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
+    <?php 
+    require_once __DIR__ . '/../layout/header.php'; 
+    require_once __DIR__ . '/../layout/nav.php'; 
+    ?>
+
     <h2>Registrar Nuevo Cliente Comercial</h2>
+    <p><a href="clientes.php">◄ Volver a la lista de clientes</a></p>
 
     <form action="../../controllers/ClienteController.php?action=registrar" method="POST">
-        
         <label>Nombre Completo / Razón Social:</label><br>
         <input type="text" name="nombre_completo" placeholder="Ej. Asociación Agraria" required><br><br>
 
@@ -34,5 +42,8 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'ventas' &&
 
         <button type="submit">Guardar Cliente</button>
     </form>
+
+    <!-- INCLUSIÓN DEL CIERRE -->
+    <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

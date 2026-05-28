@@ -12,6 +12,10 @@ class CompraController {
         $this->modelo = new Compra();
     }
 
+    public function mostrarReporte() {
+        return $this->modelo->obtenerReporteCompras();
+    }
+
     public function procesar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST = array_map('htmlspecialchars', $_POST);
@@ -23,7 +27,6 @@ class CompraController {
                 $exito = $this->modelo->registrarCompra($id_producto, $cantidad, $fecha_compra);
                 
                 if ($exito) {
-                    // Si todo sale bien, lo mandamos a ver el inventario actualizado
                     header("Location: ../views/modules/inventario.php");
                     exit();
                 } else {
@@ -36,7 +39,6 @@ class CompraController {
     }
 }
 
-// Disparador directo del formulario
 if (isset($_GET['action']) && $_GET['action'] === 'comprar') {
     $controller = new CompraController();
     $controller->procesar();

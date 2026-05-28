@@ -17,6 +17,7 @@ class Pedido {
         $resultado = mysqli_query($this->db, $sql);
         return mysqli_fetch_array($resultado);
     }
+
     public function registrarVenta($id_cliente, $id_producto, $cantidad, $total_pagar, $fecha_registro) {
         $fechaEsc = mysqli_real_escape_string($this->db, $fecha_registro);
 
@@ -30,5 +31,30 @@ class Pedido {
         }
 
         return false;
+    }
+
+    public function obtenerReportePedidos() {
+        $sql = "SELECT 
+                    p.id_pedido, 
+                    p.fecha_registro, 
+                    p.cantidad,
+                    p.total_pagar, 
+                    p.estado_entrega,
+                    c.nombre_completo AS cliente_nombre, 
+                    prod.nombre_insumo AS producto_nombre
+                FROM pedidos p
+                INNER JOIN clientes c ON p.id_cliente = c.id_cliente
+                INNER JOIN productos prod ON p.id_producto = prod.id_producto
+                ORDER BY p.id_pedido DESC";
+                
+        $resultado = mysqli_query($this->db, $sql);
+        
+        $pedidos = [];
+        if ($resultado && mysqli_num_rows($resultado) > 0) {
+            while ($row = mysqli_fetch_assoc($resultado)) {
+                $pedidos[] = $row;
+            }
+        }
+        return $pedidos;
     }
 }

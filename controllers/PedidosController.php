@@ -13,6 +13,10 @@ class PedidosController {
         $this->modelo = new Pedido();
     }
 
+    public function mostrarReporte() {
+        return $this->modelo->obtenerReportePedidos();
+    }
+
     public function procesarVenta() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST = array_map('htmlspecialchars', $_POST);

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// CONTROL DE SEGURIDAD: Solo entran el Chofer repartidor o el Gerente administrador
+// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'chofer' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -20,12 +20,13 @@ $resultado = $modeloRuta->listarPedidosParaEntrega();
 </head>
 <body>
 
-    <p>
-        <a href="../dashboard.php">◄ Volver al Dashboard</a>
-    </p>
+    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
+    <?php 
+    require_once __DIR__ . '/../layout/header.php'; 
+    require_once __DIR__ . '/../layout/nav.php'; 
+    ?>
 
     <h2>Hojas de Ruta y Control de Entregas (Módulo Chofer)</h2>
-    <p><em>Aquí se listan los pedidos pendientes de envío o que actualmente están en camino al destino.</em></p>
 
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
@@ -47,13 +48,13 @@ $resultado = $modeloRuta->listarPedidosParaEntrega();
                 while ($row = mysqli_fetch_array($resultado)) { 
                 ?>
                     <tr>
-                        <td><?php echo $row['id_pedido']; ?></td>
-                        <td><strong><?php echo $row['cliente']; ?></strong></td>
-                        <td><?php echo $row['zona']; ?></td>
-                        <td><u><?php echo $row['direccion']; ?></u></td>
-                        <td><?php echo !empty($row['telefono']) ? $row['telefono'] : 'Sin teléfono'; ?></td>
-                        <td><?php echo $row['producto']; ?></td>
-                        <td><?php echo $row['cantidad']; ?></td>
+                        <td><?php echo htmlspecialchars($row['id_pedido'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><strong><?php echo htmlspecialchars($row['cliente'], ENT_QUOTES, 'UTF-8'); ?></strong></td>
+                        <td><?php echo htmlspecialchars($row['zona'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><u><?php echo htmlspecialchars($row['direccion'], ENT_QUOTES, 'UTF-8'); ?></u></td>
+                        <td><?php echo htmlspecialchars(!empty($row['telefono']) ? $row['telefono'] : 'Sin teléfono', ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php echo htmlspecialchars($row['producto'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php echo htmlspecialchars($row['cantidad'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>
                             <?php if ($row['estado_entrega'] === 'Pendiente') { ?>
                                 <span style="background-color: #ffcccc; padding: 2px 5px;">Pendiente</span>
@@ -64,7 +65,6 @@ $resultado = $modeloRuta->listarPedidosParaEntrega();
                         <td>
                             <form action="../../controllers/RutaController.php?action=actualizar_ruta" method="POST" style="margin:0;">
                                 <input type="hidden" name="id_pedido" value="<?php echo $row['id_pedido']; ?>">
-                                
                                 <select name="estado_entrega" required>
                                     <option value="">-- Cambiar a --</option>
                                     <?php if ($row['estado_entrega'] === 'Pendiente') { ?>
@@ -72,7 +72,6 @@ $resultado = $modeloRuta->listarPedidosParaEntrega();
                                     <?php } ?>
                                     <option value="Entregado">Entregado</option>
                                 </select>
-                                
                                 <button type="submit">Guardar</button>
                             </form>
                         </td>
@@ -80,11 +79,13 @@ $resultado = $modeloRuta->listarPedidosParaEntrega();
                 <?php 
                 } 
             } else {
-                echo "<tr><td colspan='9'>No tienes entregas pendientes ni rutas activas por el momento. ¡Buen trabajo!</td></tr>";
+                echo "<tr><td colspan='9'>No tienes entregas pendientes ni rutas activas por el momento.</td></tr>";
             }
             ?>
         </tbody>
     </table>
 
+    <!-- INCLUSIÓN DEL CIERRE -->
+    <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

@@ -12,6 +12,7 @@ class ClienteController {
     public function __construct() {
         $this->modelo = new Cliente();
     }
+
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST = array_map('htmlspecialchars', $_POST);
@@ -40,6 +41,7 @@ class ClienteController {
             }
         }
     }
+
     public function editar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST = array_map('htmlspecialchars', $_POST);
@@ -65,24 +67,11 @@ class ClienteController {
             }
         }
     }
-    public function borrar() {
-        $id = intval($_GET['id'] ?? 0);
 
-        if ($id > 0) {
-            $db = Conexion::conectar();
-            
-            $sql = "DELETE FROM clientes WHERE id_cliente = $id";
-            $exito = mysqli_query($db, $sql);
-            
-            if ($exito) {
-                header("Location: ../views/modules/clientes.php");
-                exit();
-            } else {
-                echo "Error: No se puede eliminar este cliente porque cuenta con un historial de pedidos asociados.";
-            }
-        }
-    }
+    // CORRECCIÓN HISTORIAL SEGURIDAD: Se eliminó por completo la función borrar() 
+    // para evitar que se destruya la integridad referencial de los pedidos vinculados.
 }
+
 if (isset($_GET['action'])) {
     $controller = new ClienteController();
     
@@ -92,7 +81,5 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] === 'editar') {
         $controller->editar();
     }
-    if ($_GET['action'] === 'eliminar') {
-        $controller->borrar();
-    }
+    // CORRECCIÓN: Se quitó el detonador de 'eliminar' para que no pueda ser forzado por URL.
 }

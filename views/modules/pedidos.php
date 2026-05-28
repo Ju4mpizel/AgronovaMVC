@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'ventas' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -19,11 +20,16 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
     <title>AgroNova - Registrar Pedido</title>
 </head>
 <body>
-    <a href="../dashboard.php">◄ Volver al Dashboard</a>
+
+    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
+    <?php 
+    require_once __DIR__ . '/../layout/header.php'; 
+    require_once __DIR__ . '/../layout/nav.php'; 
+    ?>
+
     <h2>Registrar Nuevo Pedido / Venta de Insumos</h2>
 
     <form action="../../controllers/PedidosController.php?action=vender" method="POST">
-        
         <label>Seleccionar Cliente Destinatario:</label><br>
         <select name="id_cliente" required>
             <option value="">-- Seleccione un cliente registrado --</option>
@@ -56,5 +62,8 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
 
         <button type="submit">Procesar Venta y Descontar del Almacén</button>
     </form>
+
+    <!-- INCLUSIÓN DEL CIERRE -->
+    <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>
