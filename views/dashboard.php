@@ -48,6 +48,7 @@ $rolEmpleado = $_SESSION['usuario_rol'];
             // CHOFER REPARTIDOR (Chofer o Gerente)
             if ($rolEmpleado == 'chofer' || $rolEmpleado == 'gerente') {
                 echo '<li><a href="modules/rutas.php">Hojas de Ruta / Entregas</a></li>';
+                echo '<li><a href="modules/pedidos_entregados.php">Historial de Pedidos Entregados</a></li>';
             }
             ?>
         </ul>
