@@ -1,7 +1,6 @@
 <?php
 session_start();
-
-// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
+// Validacion para que no redirija a cualquier pagina sin estar logueado
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'chofer' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -9,7 +8,6 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'chofer' &&
 
 require_once __DIR__ . '/../../config/conexion.php';
 $db = Conexion::conectar();
-
 $sql = "SELECT p.id_pedido, c.nombre_completo AS cliente, c.zona, c.direccion,
                pr.nombre_insumo AS producto, p.cantidad, p.total_pagar, p.fecha_registro
         FROM pedidos p
@@ -27,20 +25,15 @@ $resultado = mysqli_query($db, $sql);
     <title>AgroNova - Entregas Concluidas</title>
 </head>
 <body>
-
-    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
     <?php 
     require_once __DIR__ . '/../layout/header.php'; 
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
-
-    <!-- Encabezado del Módulo -->
     <div class="flex flex-col gap-1 pb-2 border-b border-slate-100">
         <h2 class="text-2xl font-bold tracking-tight text-slate-800">Historial de Entregas Concluidas</h2>
         <p class="text-sm text-slate-400 font-medium">Registro histórico de pedidos entregados con éxito al sector agrícola.</p>
     </div>
 
-    <!-- Tabla de Concluidos -->
     <div class="w-full overflow-x-auto border border-slate-100 rounded-2xl shadow-sm bg-white mt-4">
         <table class="w-full text-left border-collapse">
             <thead>
@@ -86,7 +79,6 @@ $resultado = mysqli_query($db, $sql);
         </table>
     </div>
 
-    <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>
