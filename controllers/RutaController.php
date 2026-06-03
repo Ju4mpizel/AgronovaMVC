@@ -16,20 +16,17 @@ class RutaController {
 
     public function cambiarEstado() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // REQUISITO DOCENTE: Sanitización estricta de todas las entradas POST
             $_POST = array_map('htmlspecialchars', $_POST);
 
             $id_pedido = intval($_POST['id_pedido'] ?? 0);
             $nuevo_estado = trim($_POST['estado_entrega'] ?? '');
 
             if ($id_pedido > 0 && (!empty($nuevo_estado))) {
-                // Validar que el estado sea uno de los permitidos para evitar alteraciones
                 if ($nuevo_estado === 'En Ruta' || $nuevo_estado === 'Entregado') {
                     
                     $exito = $this->modelo->actualizarEstado($id_pedido, $nuevo_estado);
                     
                     if ($exito) {
-                        // Redirigir de vuelta a la hoja de rutas del chofer
                         header("Location: ../views/modules/rutas.php");
                         exit();
                     } else {
@@ -45,7 +42,6 @@ class RutaController {
     }
 }
 
-// DETONADOR DIRECTO DESDE EL FORMULARIO DE HOJA DE RUTA
 if (isset($_GET['action']) && $_GET['action'] === 'actualizar_ruta') {
     $controller = new RutaController();
     $controller->cambiarEstado();

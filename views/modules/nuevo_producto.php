@@ -1,7 +1,6 @@
 <?php
+// Validacion para que no redirija a cualquier pagina sin estar logueado
 session_start();
-
-// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'almacen' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -14,14 +13,10 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'almacen' &
     <title>AgroNova - Nuevo Producto</title>
 </head>
 <body>
-
-    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
     <?php 
     require_once __DIR__ . '/../layout/header.php'; 
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
-
-    <!-- Encabezado con Botón de Retorno -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-slate-100">
         <div class="flex flex-col gap-1">
             <h2 class="text-2xl font-bold tracking-tight text-slate-800">Registrar Nuevo Insumo</h2>
@@ -31,8 +26,6 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'almacen' &
             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al inventario
         </a>
     </div>
-
-    <!-- Contenedor del Formulario -->
     <div class="max-w-2xl bg-white border border-slate-100 rounded-2xl shadow-sm p-8 mt-4">
         <form action="../../controllers/InventarioController.php?action=registrar" method="POST" class="space-y-5">
             
@@ -83,8 +76,6 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'almacen' &
             </div>
         </form>
     </div>
-
-    <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

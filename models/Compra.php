@@ -7,7 +7,7 @@ class Compra {
     public function __construct() {
         $this->db = Conexion::conectar();
     }
-
+    //CREATE
     public function registrarCompra($id_producto, $cantidad, $fecha) {
         $sqlProd = "SELECT precio_compra FROM productos WHERE id_producto = $id_producto LIMIT 1";
         $resProd = mysqli_query($this->db, $sqlProd);
@@ -27,7 +27,7 @@ class Compra {
 
         return false;
     }
-
+    //READ
     public function obtenerReporteCompras() {
         $sql = "SELECT 
                     co.id_compra, 

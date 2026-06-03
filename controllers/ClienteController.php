@@ -67,9 +67,6 @@ class ClienteController {
             }
         }
     }
-
-    // CORRECCIÓN HISTORIAL SEGURIDAD: Se eliminó por completo la función borrar() 
-    // para evitar que se destruya la integridad referencial de los pedidos vinculados.
 }
 
 if (isset($_GET['action'])) {
@@ -81,5 +78,4 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] === 'editar') {
         $controller->editar();
     }
-    // CORRECCIÓN: Se quitó el detonador de 'eliminar' para que no pueda ser forzado por URL.
 }

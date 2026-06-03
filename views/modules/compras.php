@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'almacen' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -19,20 +17,14 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
     <title>AgroNova - Registrar Compra</title>
 </head>
 <body>
-
-    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
     <?php 
     require_once __DIR__ . '/../layout/header.php'; 
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
-
-    <!-- Encabezado -->
     <div class="flex flex-col gap-1 pb-2 border-b border-slate-100">
         <h2 class="text-2xl font-bold tracking-tight text-slate-800">Registrar Compra de Insumos</h2>
         <p class="text-sm text-slate-400 font-medium">Incrementa existencias físicas registrando transacciones de proveedores en bruto.</p>
     </div>
-
-    <!-- Contenedor del Formulario -->
     <div class="max-w-2xl bg-white border border-slate-100 rounded-2xl shadow-sm p-8 mt-4">
         <form action="../../controllers/CompraController.php?action=comprar" method="POST" class="space-y-5">
             
@@ -75,8 +67,6 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
             </div>
         </form>
     </div>
-
-    <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

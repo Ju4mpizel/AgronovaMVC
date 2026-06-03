@@ -8,13 +8,10 @@ require_once __DIR__ . '/../config/conexion.php';
 
 class Ruta {
     private $db;
-
-
     public function __construct() {
         $this->db = Conexion::conectar();
     }
-
-    // LEER: Obtener los pedidos que necesitan atención del chofer (Pendientes o En Ruta)
+    //READ
     public function listarPedidosParaEntrega() {
         $sql = "SELECT p.id_pedido, c.nombre_completo AS cliente, c.direccion, c.zona, c.telefono,
                        pr.nombre_insumo AS producto, p.cantidad, p.estado_entrega, p.fecha_registro
@@ -27,7 +24,7 @@ class Ruta {
         return mysqli_query($this->db, $sql);
     }
 
-    // ACTUALIZAR: Cambiar el estado del pedido ('En Ruta' o 'Entregado')
+    //UPDATE
     public function actualizarEstado($id_pedido, $nuevo_estado) {
         $estadoEsc = mysqli_real_escape_string($this->db, $nuevo_estado);
         

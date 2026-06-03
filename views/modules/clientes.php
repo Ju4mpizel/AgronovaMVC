@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// CÓDIGO GUARDIÁN ORIGINAL DE SEGURIDAD INTEGRAL - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'ventas' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -19,27 +17,19 @@ $resultado = $modeloCliente->listarTodos();
     <title>AgroNova - Gestión de Clientes</title>
 </head>
 <body>
-
-    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE DEL DASHBOARD -->
     <?php 
     require_once __DIR__ . '/../layout/header.php'; 
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
-
-    <!-- Encabezado del Módulo con Botón de Acción Rápida -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-slate-100">
         <div class="flex flex-col gap-1">
             <h2 class="text-2xl font-bold tracking-tight text-slate-800">Gestión de Clientes</h2>
             <p class="text-sm text-slate-400 font-medium">Administra la cartera de productores comerciales y datos de facturación.</p>
         </div>
-        
-        <!-- Botón Agregar Nuevo Cliente Estilo Donezo Mockup -->
         <a href="nuevo_cliente.php" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-agro-600 hover:bg-agro-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all shrink-0">
             <i data-lucide="user-plus" class="w-4 h-4"></i> Agregar nuevo cliente
         </a>
     </div>
-
-    <!-- Contenedor de la Tabla Redondeada con Scroll Horizontal Seguro -->
     <div class="w-full overflow-x-auto border border-slate-100 rounded-2xl shadow-sm bg-white mt-4">
         <table class="w-full text-left border-collapse">
             <thead>
@@ -55,7 +45,7 @@ $resultado = $modeloCliente->listarTodos();
             </thead>
             <tbody class="divide-y divide-slate-100 text-sm text-slate-600 font-medium">
                 <?php 
-                // Recorrido lineal de registros de la BD
+                //Recorrido lineal de registros de la BD
                 while ($row = mysqli_fetch_array($resultado)) { 
                 ?>
                     <tr class="hover:bg-slate-50/70 transition-colors">
@@ -78,7 +68,6 @@ $resultado = $modeloCliente->listarTodos();
                             </span>
                         </td>
                         <td class="py-4 px-6 text-center">
-                            <!-- Botón de Editar Estilizado como enlace de software moderno -->
                             <a href="editar_cliente.php?id=<?php echo urlencode($row['id_cliente']); ?>" class="inline-flex items-center gap-1 text-xs font-bold text-agro-600 hover:text-agro-700 hover:underline transition-all">
                                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar
                             </a>
@@ -90,8 +79,6 @@ $resultado = $modeloCliente->listarTodos();
             </tbody>
         </table>
     </div>
-
-    <!-- INCLUSIÓN DEL CIERRE DEL CONTENEDOR Y HTML -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

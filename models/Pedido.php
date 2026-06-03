@@ -17,7 +17,7 @@ class Pedido {
         $resultado = mysqli_query($this->db, $sql);
         return mysqli_fetch_array($resultado);
     }
-
+    //CREATE
     public function registrarVenta($id_cliente, $id_producto, $cantidad, $total_pagar, $fecha_registro) {
         $fechaEsc = mysqli_real_escape_string($this->db, $fecha_registro);
 
@@ -27,20 +27,17 @@ class Pedido {
         $insertExito = mysqli_query($this->db, $sqlPedido);
         
         if ($insertExito) {
-            // CAPTURA CORRECTA: Recuperamos el ID usando la misma conexión activa ($this->db)
             $id_nuevo_pedido = mysqli_insert_id($this->db);
             
-            // Actualizamos el stock en el almacén
             $sqlStock = "UPDATE productos SET stock_disponible = stock_disponible - $cantidad WHERE id_producto = $id_producto";
             mysqli_query($this->db, $sqlStock);
             
-            // RETORNAMOS EL ID generado para que el controlador lo use directamente
             return $id_nuevo_pedido;
         }
 
         return false;
     }
-
+    //READ
     public function obtenerReportePedidos() {
         $sql = "SELECT 
                     p.id_pedido, 

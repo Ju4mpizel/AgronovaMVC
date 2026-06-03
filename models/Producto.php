@@ -7,14 +7,12 @@ class Producto {
     public function __construct() {
         $this->db = Conexion::conectar();
     }
-
-    // LEER: Obtener todos los productos para la tabla
     public function listarTodos() {
         $sql = "SELECT * FROM productos";
         return mysqli_query($this->db, $sql);
     }
 
-    // CREAR: Insertar un nuevo insumo agrícola
+    //CREATE o INSERT
     public function crear($nombre, $categoria, $p_compra, $p_venta, $stock, $vencimiento) {
         $nombreEsc = mysqli_real_escape_string($this->db, $nombre);
         $catEsc = mysqli_real_escape_string($this->db, $categoria);
@@ -25,15 +23,12 @@ class Producto {
         
         return mysqli_query($this->db, $sql);
     }
-
-    // LEER UNO: Obtener los datos de un solo producto para cargar el formulario de edición
     public function obtenerPorId($id) {
         $sql = "SELECT * FROM productos WHERE id_producto = $id LIMIT 1";
         $resultado = mysqli_query($this->db, $sql);
         return mysqli_fetch_array($resultado);
     }
-
-    // ACTUALIZAR: Guardar los cambios editados
+    //UPDATE
     public function actualizar($id, $nombre, $categoria, $p_compra, $p_venta, $stock, $vencimiento) {
         $nombreEsc = mysqli_real_escape_string($this->db, $nombre);
         $catEsc = mysqli_real_escape_string($this->db, $categoria);

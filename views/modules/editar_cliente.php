@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'ventas' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -26,14 +24,11 @@ if (!$cliente) {
     <title>AgroNova - Editar Cliente</title>
 </head>
 <body>
-
-    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
     <?php 
     require_once __DIR__ . '/../layout/header.php'; 
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
 
-    <!-- Encabezado -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-slate-100">
         <div class="flex flex-col gap-1">
             <h2 class="text-2xl font-bold tracking-tight text-slate-800">Modificar Datos del Cliente</h2>
@@ -43,8 +38,6 @@ if (!$cliente) {
             <i data-lucide="x" class="w-3.5 h-3.5"></i> Cancelar cambios
         </a>
     </div>
-
-    <!-- Contenedor Formulario -->
     <div class="max-w-2xl bg-white border border-slate-100 rounded-2xl shadow-sm p-8 mt-4">
         <form action="../../controllers/ClienteController.php?action=editar" method="POST" class="space-y-5">
             <input type="hidden" name="id_cliente" value="<?php echo htmlspecialchars($cliente['id_cliente'], ENT_QUOTES, 'UTF-8'); ?>">
@@ -90,8 +83,6 @@ if (!$cliente) {
             </div>
         </form>
     </div>
-
-    <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

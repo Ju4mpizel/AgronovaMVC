@@ -1,7 +1,6 @@
 <?php
+// Validacion para que no redirija a cualquier pagina sin estar logueado
 session_start();
-
-// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'ventas' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
@@ -20,23 +19,15 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
     <title>AgroNova - Registrar Pedido</title>
 </head>
 <body class="bg-[#f4f6f8]">
-
-    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
     <?php 
     require_once __DIR__ . '/../layout/header.php'; 
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
-
-    <!-- Encabezado del Módulo -->
     <div class="flex flex-col gap-1 pb-2 border-b border-slate-100">
         <h2 class="text-2xl font-bold tracking-tight text-slate-800">Registrar Pedido (Venta Directa)</h2>
         <p class="text-sm text-slate-400 font-medium">Despacha insumos agrícolas del inventario cargando la transacción a una cuenta de cliente activa.</p>
     </div>
-
-    <!-- CONTENEDOR ANCHO ASOCIADO CON AVISOS CONTROLADOS -->
     <div class="max-w-2xl mt-4">
-
-        <!-- ALERTA DE STOCK INSUFICIENTE DINÁMICA -->
         <?php if (isset($_GET['error']) && $_GET['error'] === 'stock_insuficiente') { 
             $disp = intval($_GET['disponible'] ?? 0);
         ?>
@@ -48,18 +39,13 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
                 </div>
             </div>
         <?php } ?>
-
-        <!-- Formulario Transaccional -->
         <div class="bg-white border border-slate-100 rounded-2xl shadow-sm p-8">
             <form action="../../controllers/PedidosController.php?action=vender" method="POST" class="space-y-5">
-                
-                <!-- SECCIÓN DE CLIENTE CON BUSCADOR FILTRABLE EN TIEMPO REAL -->
                 <div class="flex flex-col gap-1.5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">
                             Seleccionar Cliente Destinatario <span class="text-red-500">*</span>
                         </label>
-                        <!-- Buscador compacto integrado al lado del label -->
                         <div class="relative w-full sm:w-64">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                                 <i data-lucide="search" class="w-3.5 h-3.5"></i>
@@ -84,8 +70,6 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
                         </div>
                     </div>
                 </div>
-
-                <!-- SECCIÓN DE SELECCIÓN DE PRODUCTO -->
                 <div class="flex flex-col gap-1.5">
                     <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Seleccionar Insumo del Inventario <span class="text-red-500">*</span></label>
                     <div class="relative">
@@ -117,8 +101,6 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
                                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono text-slate-500 bg-slate-50 cursor-not-allowed focus:outline-none">
                     </div>
                 </div>
-
-                <!-- BOTONES DE ACCIÓN CONFIGURADOS -->
                 <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
                     <span class="text-xs font-medium text-slate-400 flex items-center gap-1.5">
                         <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> Stock validado automáticamente.
@@ -138,22 +120,17 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
         </div>
     </div>
 
-    <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 
-    <!-- JAVASCRIPT DE FILTRADO EN TIEMPO REAL -->
+    <!--implementacion de script de busqueda, realiza la busqueda mediante un onkeyup -->
     <script>
         function filtrarClientes() {
-            // Obtener el término ingresado por el usuario y pasarlo a minúsculas
             const input = document.getElementById('buscar_cliente');
             const filter = input.value.toLowerCase();
             const select = document.getElementById('select_cliente');
             const options = select.options;
-
-            // Recorrer todas las opciones del select (empezando en 1 para saltar el placeholder)
             for (let i = 1; i < options.length; i++) {
                 const text = options[i].text.toLowerCase();
-                // Si el término coincide con el nombre o el CI/NIT, se muestra, si no se oculta
                 if (text.includes(filter)) {
                     options[i].style.display = "";
                 } else {
@@ -163,7 +140,7 @@ $productos = mysqli_query($db, "SELECT id_producto, nombre_insumo, stock_disponi
         }
     </script>
 
-    <!-- SCRIPT DISPARADOR DE LA VENTANA DE IMPRESIÓN PDF -->
+    <!-- funcion de impresion en pdf este llama a la ventana de imprimir factura que tiene la funcion de windows paint-->
     <?php if (isset($_GET['imprimir_id'])) { 
         $id_print = intval($_GET['imprimir_id']);
     ?>

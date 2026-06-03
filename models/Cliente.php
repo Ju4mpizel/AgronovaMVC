@@ -16,7 +16,7 @@ class Cliente {
         $sql = "SELECT * FROM clientes";
         return mysqli_query($this->db, $sql);
     }
-
+    //funcion de busqueda
     public function existeNit($ci_nit) {
         $nitEsc = mysqli_real_escape_string($this->db, $ci_nit);
         $sql = "SELECT id_cliente FROM clientes WHERE ci_nit = '$nitEsc' LIMIT 1";
@@ -26,7 +26,7 @@ class Cliente {
         }
         return false;
     }
-
+    //CREATE
     public function crear($nombre, $ci_nit, $telefono, $direccion, $zona) {
         $nombreEsc = mysqli_real_escape_string($this->db, $nombre);
         $nitEsc = mysqli_real_escape_string($this->db, $ci_nit);
@@ -39,12 +39,13 @@ class Cliente {
         
         return mysqli_query($this->db, $sql);
     }
-
+    //READ por ID
     public function obtenerPorId($id) {
         $sql = "SELECT * FROM clientes WHERE id_cliente = $id LIMIT 1";
         $resultado = mysqli_query($this->db, $sql);
         return mysqli_fetch_array($resultado);
     }
+    //UPDATE
     public function actualizar($id, $nombre, $ci_nit, $telefono, $direccion, $zona) {
         $nombreEsc = mysqli_real_escape_string($this->db, $nombre);
         $nitEsc = mysqli_real_escape_string($this->db, $ci_nit);

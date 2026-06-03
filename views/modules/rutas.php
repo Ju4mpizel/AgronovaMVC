@@ -1,14 +1,10 @@
 <?php
 session_start();
-
-// CÓDIGO GUARDIÁN DE SEGURIDAD - INTACTO
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] !== 'chofer' && $_SESSION['usuario_rol'] !== 'gerente')) {
     header("Location: ../login.php");
     exit();
 }
-
 require_once __DIR__ . '/../../models/Ruta.php';
-
 $modeloRuta = new Ruta();
 $resultado = $modeloRuta->listarPedidosParaEntrega();
 ?>
@@ -19,20 +15,14 @@ $resultado = $modeloRuta->listarPedidosParaEntrega();
     <title>AgroNova - Hojas de Ruta</title>
 </head>
 <body>
-
-    <!-- INCLUSIÓN DE LA ESTRUCTURA PERSISTENTE -->
     <?php 
     require_once __DIR__ . '/../layout/header.php'; 
     require_once __DIR__ . '/../layout/nav.php'; 
     ?>
-
-    <!-- Encabezado del Módulo -->
     <div class="flex flex-col gap-1 pb-2 border-b border-slate-100">
         <h2 class="text-2xl font-bold tracking-tight text-slate-800">Hojas de Ruta y Entregas</h2>
         <p class="text-sm text-slate-400 font-medium">Panel logístico de monitoreo y despacho para conductores autorizados.</p>
     </div>
-
-    <!-- Tabla de Envíos en curso -->
     <div class="w-full overflow-x-auto border border-slate-100 rounded-2xl shadow-sm bg-white mt-4">
         <table class="w-full text-left border-collapse">
             <thead>
@@ -98,8 +88,6 @@ $resultado = $modeloRuta->listarPedidosParaEntrega();
             </tbody>
         </table>
     </div>
-
-    <!-- INCLUSIÓN DEL CIERRE -->
     <?php require_once __DIR__ . '/../layout/footer.php'; ?>
 </body>
 </html>

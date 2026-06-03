@@ -44,13 +44,10 @@ class PedidosController {
                     exit();
                 }
                 $total_pagar = $precio_venta * $cantidad;
-
-                // CORRECCIÓN CLAVE: $resultado_pedido ahora contendrá el ID numérico real devuelto por el modelo
                 $resultado_pedido = $this->modelo->registrarVenta($id_cliente, $id_producto, $cantidad, $total_pagar, $fecha_registro);
                 
                 if ($resultado_pedido !== false) {
                     if ($accion_factura) {
-                        // Enviamos el ID real de forma directa y limpia
                         header("Location: ../views/modules/pedidos.php?imprimir_id=" . $resultado_pedido);
                     } else {
                         header("Location: ../views/modules/lista_pedidos.php");
