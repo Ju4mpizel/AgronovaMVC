@@ -1,13 +1,11 @@
 <?php
-// views/layout/nav.php
 $rolEmpleado = $_SESSION['usuario_rol'] ?? '';
-$url_base = '/AgronovaMVC/views/modules/';
-$url_inicio = '/AgronovaMVC/views/dashboard.php';
+$url_base = '/views/modules/';
+$url_inicio = '/views/dashboard.php';
 ?>
-<!-- BARRA LATERAL ESTÁTICA: Altura total y scroll vertical propio e independiente si es necesario -->
 <aside class="w-72 h-full bg-white rounded-2xl border border-slate-100 flex flex-col justify-between p-6 shadow-sm shrink-0 overflow-y-auto custom-scroll">
     <div>
-        <!-- Logo de la Empresa -->
+        <!--Logo-->
         <div class="flex items-center gap-3 px-2 mb-8">
             <div class="w-10 h-10 rounded-xl bg-agro-100 flex items-center justify-center text-agro-600">
                 <i data-lucide="sprout" class="w-6 h-6"></i>
@@ -17,8 +15,6 @@ $url_inicio = '/AgronovaMVC/views/dashboard.php';
                 <span class="text-xs text-slate-400 font-medium">Distribuciones S.R.L.</span>
             </div>
         </div>
-
-        <!-- Menú Principal -->
         <div class="space-y-6">
             <div>
                 <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase px-2">Menú Principal</span>
@@ -31,7 +27,7 @@ $url_inicio = '/AgronovaMVC/views/dashboard.php';
                 </ul>
             </div>
 
-            <!-- Secciones por Roles Dinámicos -->
+            <!--Opciones dinamicas segun el rol que inicie sesion-->
             <?php if ($rolEmpleado === 'ventas' || $rolEmpleado === 'gerente') { ?>
             <div>
                 <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase px-2">Comercial</span>
@@ -110,8 +106,7 @@ $url_inicio = '/AgronovaMVC/views/dashboard.php';
             <?php } ?>
         </div>
     </div>
-
-    <!-- Sección de Usuario Inferior Fija dentro del aside -->
+    <!--Usuario en la NAVBAR con su cierre de sesion-->
     <div class="pt-4 mt-6 border-t border-slate-100 flex flex-col gap-3 shrink-0">
         <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center font-bold text-sm text-slate-700 uppercase">
@@ -122,11 +117,10 @@ $url_inicio = '/AgronovaMVC/views/dashboard.php';
                 <span class="text-xs text-slate-400 capitalize"><?php echo htmlspecialchars($rolEmpleado, ENT_QUOTES, 'UTF-8'); ?></span>
             </div>
         </div>
-        <a href="/AgronovaMVC/controllers/AuthController.php?action=logout" class="flex items-center justify-center gap-2 w-full py-2 bg-slate-50 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-xl text-xs font-semibold transition-all">
+        <a href="/controllers/AuthController.php?action=logout" class="flex items-center justify-center gap-2 w-full py-2 bg-slate-50 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-xl text-xs font-semibold transition-all">
             <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
         </a>
     </div>
 </aside>
 
-<!-- PANEL DERECHO TOTALMENTE INDEPENDIENTE: Altura completa, scroll vertical propio e inmune a deformaciones -->
 <main class="flex-1 h-full bg-white rounded-2xl border border-slate-100 p-8 shadow-sm overflow-y-auto min-w-0 flex flex-col gap-6">
